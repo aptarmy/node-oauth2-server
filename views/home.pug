@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  h1 Oauth2 Server in Express.js
+  p ใช้เพียงแค่ไลบรารี่ #[code oauth2-server] เท่านั้น
+  hr
+  p ลองรันโค้ดนี้ ให้ server เจน #[code access_token] ออกมา
+  textarea(class='form-control', rows=6).
+    $.ajax({
+      type: 'POST',
+      url: '/oauth2/login',
+      data: { client_id: '001', client_secret: 'secret', grant_type: 'password', username: 'user001', password: 'password001' },
+      processData: true,
+      success: function(data) { console.log(data) }
+    })
+  br
+  p รันโคดนี้ทดสอบใช้ API ที่ใช้งานได้เฉพาะคนที่มี #[code access_token]
+  textarea(class='form-control', rows=6).
+    $.ajax({
+      type: 'GET',
+      url: '/oauth2/protected-resources',
+      headers: { Authorization: "Bearer <ACCESS_TOKEN>" },
+      success: function(data) { console.log(data) }
+    })
+  br
+  p ทดสอบใช้งาน API ที่มีการป้องกัน โดยไม่ใช้ #[code access_token]
+  textarea(class='form-control', rows=4).
+    $.ajax({
+      type: 'GET',
+      url: '/oauth2/protected-resources',
+      success: function(data) { console.log(data) }
+    })
